@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgis/postgis:15-3.4
+    container_name: kc_postgis
+    environment:
+      POSTGRES_USER: kc_user
+      POSTGRES_PASSWORD: kc_pass
+      POSTGRES_DB: kc_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kc_user -d kc_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  db_data:
